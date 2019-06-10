@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include "constants.h"
 
+#include "util.h"
+
 
 using namespace std;
 
@@ -91,5 +93,23 @@ string ProcessParser::getCpuPercent(string pid){
     float seconds = utime -(starttime/freq);
     result = 100*((total_time/freq)/seconds);
 
+    return to_string(result);
+}
+
+
+
+string ProcessParser::getProcUpTime(string pid){
+    
+    string line;
+    ifstream stream = Util::getStream((Path::basePath() + pid + "/"+Path::statPath()));
+    getline(stream, line);
+    istringstream buf(line);
+    istream_iterator<string> beg(buf), end;
+    vector<string> values(beg,end);
+    float uptime = stof(values[13]);
+
+    float freq = sysconf(_SC_CLK_TCK);
+
+    float result = uptime/freq;
     return to_string(result);
 }
