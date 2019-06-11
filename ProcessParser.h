@@ -300,6 +300,8 @@ string ProcessParser::PrintCpuStats(vector<string> values1, vector<string>values
     float result =100*(activeTime/totalTime);
     string s = to_string(result);
 
+    return s;
+
 }
 
 
@@ -334,6 +336,8 @@ string ProcessParser::getSysKernelVersion(){
     string Path = Path::basePath()+Path::versionPath();
     values = ProcessParser::searcher(Path, "Linux version ");
     result = values[1];
+
+    return result;
 }
 
 
@@ -346,5 +350,53 @@ string ProcessParser::getOSName(){
     string Path = "/etc/os-release";
     values = ProcessParser::searcher(Path, "PRETTY NAME=");
     result = values[1];
+
+    return result;
 }
 
+
+
+int ProcessParser::getTotalThreads(){
+
+    vector<string> values;
+    vector<string> pidList;
+    string Path;
+    int result = 0;
+
+    pidList = getPidList();
+    for (string pid : pidList){
+        Path = Path::basePath()+pid+Path::statusPath();
+        values = ProcessParser::searcher(Path, "Threads:");
+        result = result + stoi(values[1]);
+    }
+
+    return result;
+}
+
+
+
+int ProcessParser::getTotalNumberOfProcesses(){
+
+    vector<string> values;
+    int result;
+
+    string Path = Path::basePath()+Path::statPath();
+    values = ProcessParser::searcher(Path, "processes");
+    result = stoi(values[1]);
+
+    return result;
+}
+
+
+
+int ProcessParser::getNumberOfRunningProcesses(){
+
+    vector<string> values;
+    int result;
+
+    string Path = Path::basePath()+Path::statPath();
+    values = ProcessParser::searcher(Path, "procs_running");
+    result = stoi(values[1]);
+
+    return result;
+}
