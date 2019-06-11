@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include "constants.h"
 
-#include "util.h"
+//#include "util.h"
 
 
 using namespace std;
@@ -26,7 +26,8 @@ using namespace std;
 class ProcessParser{
 
 private:
-    std::ifstream stream;
+    ifstream stream;
+    static vector<string> searcher(string path, string ref);
 
 public:
     static string getCmd(string pid);
@@ -52,6 +53,24 @@ public:
 };
 
 // TODO: Define all of the above functions below:
+
+vector<string> ProcessParser::searcher(string path, string ref){
+
+    string line;
+    vector<string> result;
+    ifstream stream = Util::getStream(path);
+    while(getline(stream, line)) {
+        if (line.compare(0,ref.size(), ref) == 0) {
+            istringstream buf(line);
+            istream_iterator<string> beg(buf), end;
+            vector<string> result(beg,end);
+            break;
+        }
+    };
+
+    return result;
+
+}
 
 
 string ProcessParser::getVmSize(string pid) {
