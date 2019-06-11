@@ -196,6 +196,8 @@ vector<string> getPidList(){
 
 }
 
+
+
 string ProcessParser::getCmd(string pid){
 
     string line;
@@ -203,4 +205,63 @@ string ProcessParser::getCmd(string pid){
     getline(stream, line);
 
     return line;
+}
+
+
+
+int ProcessParser::getNumberOfCores(){
+    string line;
+    string name = "cpu cores";
+    int result;
+    ifstream stream = Util::getStream((Path::basePath()+"cpuinfo"));
+    while(getline(stream, line)) {
+        if (line.compare(0,name.size(), name) == 0) {
+            istringstream buf(line);
+            istream_iterator<string> beg(buf), end;
+            vector<string> values(beg,end);
+            result = stoi(values[3]);
+            break;
+        }
+    };
+    return result;
+}
+
+
+
+vector<string> ProcessParser::getSysCpuPercent(string coreNumber = ""){
+
+    string line;
+    string name = "cpu"+coreNumber;
+    vector<string> result;
+    ifstream stream = Util::getStream((Path::basePath()+Path::statPath()));
+    while(getline(stream, line)) {
+        if (line.compare(0,name.size(), name) == 0) {
+            istringstream buf(line);
+            istream_iterator<string> beg(buf), end;
+            result(beg+1,end);
+            break;
+        }
+    };
+
+    return result;
+}
+
+
+
+float ProcessParser::getSysActiveCpuTime(vector<string> values){
+    // convert to float an sum the values of the cpu
+    return( stof(values[S_USER])+
+            stof(values[S_NICE])+
+            stof(values[S_SYSTEM])+
+            stof(values[S_IRQ])+
+            stof(values[S_SFTIRQ])+
+            stof(values[S_STEAL])+
+            stof(values[S_GUEST])+
+            stof(values[S_GUEST_NICE]));
+}
+
+float ProcessParser::getSysIdleCpuTime(vector<string> values){
+    // convert to float an sum the values of the cpu
+    return( stof(values[S_IDLE])+
+            stof(values[S_IOWAIT]));
 }
