@@ -24,17 +24,21 @@
 using namespace std;
 
 class ProcessParser{
+
 private:
     std::ifstream stream;
-    public:
+
+public:
     static string getCmd(string pid);
     static vector<string> getPidList();
-    static std::string getVmSize(string pid);
-    static std::string getCpuPercent(string pid);
+    static string getVmSize(string pid);
+    static string getCpuPercent(string pid);
     static long int getSysUpTime();
-    static std::string getProcUpTime(string pid);
+    static string getProcUpTime(string pid);
     static string getProcUser(string pid);
     static vector<string> getSysCpuPercent(string coreNumber = "");
+    static float getSysActiveCpuTime(vector<string> values);
+    static float getSysIdleCpuTime(vector<string> values);
     static float getSysRamPercent();
     static string getSysKernelVersion();
     static int getNumberOfCores();
@@ -42,8 +46,9 @@ private:
     static int getTotalNumberOfProcesses();
     static int getNumberOfRunningProcesses();
     static string getOSName();
-    static std::string PrintCpuStats(std::vector<std::string> values1, std::vector<std::string>values2);
+    static string PrintCpuStats(vector<string> values1, vector<string>values2);
     static bool isPidExisting(string pid);
+
 };
 
 // TODO: Define all of the above functions below:
@@ -233,12 +238,12 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber = ""){
     string line;
     string name = "cpu"+coreNumber;
     vector<string> result;
-    ifstream stream = Util::getStream((Path::basePath()+Path::statPath()));
+    ifstream stream = Util::getStream(Path::basePath()+Path::statPath());
     while(getline(stream, line)) {
         if (line.compare(0,name.size(), name) == 0) {
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
-            result(beg+1,end);
+            vector<string> result(beg+1,end);
             break;
         }
     };
@@ -254,7 +259,7 @@ float ProcessParser::getSysActiveCpuTime(vector<string> values){
             stof(values[S_NICE])+
             stof(values[S_SYSTEM])+
             stof(values[S_IRQ])+
-            stof(values[S_SFTIRQ])+
+            stof(values[S_SOFTIRQ])+
             stof(values[S_STEAL])+
             stof(values[S_GUEST])+
             stof(values[S_GUEST_NICE]));
@@ -264,4 +269,16 @@ float ProcessParser::getSysIdleCpuTime(vector<string> values){
     // convert to float an sum the values of the cpu
     return( stof(values[S_IDLE])+
             stof(values[S_IOWAIT]));
+}
+
+
+
+string PrintCpuStats(vector<string> values1, vector<string>values2){
+
+    float activeTime = ProcessParser::getSysActiveCpuTime(values2)-ProcessParser::getSysActiveCpuTime(values1);
+    float idleTime = ProcessParser::getSysIdleCpuTime(values2)-ProcessParser::getSysIdleCpuTime(values1);
+    float totalTime = activeTime + idleTime;
+    float result =100*(activeTime/totalTime);
+    string s = to_string(result);
+
 }
