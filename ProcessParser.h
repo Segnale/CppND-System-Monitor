@@ -301,3 +301,25 @@ string PrintCpuStats(vector<string> values1, vector<string>values2){
     string s = to_string(result);
 
 }
+
+
+float getSysRamPercent(){
+
+    vector<string> values;
+    float result;
+    float totalMem;
+    float freeMem;
+    float buffers;
+
+    string Path = Path::basePath()+Path::memInfoPath();
+    values = ProcessParser::searcher(Path, "MemAvailable:");
+    totalMem = stof(values[1]);
+    values = ProcessParser::searcher(Path, "MemFree:");
+    freeMem = stof(values[1]);
+    values = ProcessParser::searcher(Path, "Buffers:");
+    buffers = stof(values[1]);
+
+    result = 100.0*(1-(freeMem/(totalMem-buffers)));
+
+    return result;
+}

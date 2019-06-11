@@ -3,7 +3,7 @@
 
 // Classic helper functions
 class Util {
-    
+
 public:
 
 static std::string convertToTime ( long int input_seconds );
@@ -49,8 +49,8 @@ std::string Util::getProgressBar(std::string percent){
 // wrapper for creating streams
 std::ifstream Util::getStream(std::string path){
     std::ifstream stream(path);
-    if (!stream){
+    if (!stream)
         throw std::runtime_error("Non - existing PID");
-    }
+        
     return stream;
 }
