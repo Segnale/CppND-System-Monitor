@@ -292,7 +292,7 @@ float ProcessParser::getSysIdleCpuTime(vector<string> values){
 
 
 
-string PrintCpuStats(vector<string> values1, vector<string>values2){
+string ProcessParser::PrintCpuStats(vector<string> values1, vector<string>values2){
 
     float activeTime = ProcessParser::getSysActiveCpuTime(values2)-ProcessParser::getSysActiveCpuTime(values1);
     float idleTime = ProcessParser::getSysIdleCpuTime(values2)-ProcessParser::getSysIdleCpuTime(values1);
@@ -303,7 +303,7 @@ string PrintCpuStats(vector<string> values1, vector<string>values2){
 }
 
 
-float getSysRamPercent(){
+float ProcessParser::getSysRamPercent(){
 
     vector<string> values;
     float result;
@@ -323,3 +323,18 @@ float getSysRamPercent(){
 
     return result;
 }
+
+string ProcessParser::getSysKernelVersion(){
+
+    vector<string> values;
+    float result;
+    float totalMem;
+    float freeMem;
+    float buffers;
+
+    string Path = Path::basePath()+Path::versionPath();
+    values = ProcessParser::searcher(Path, "Linux version ");
+    totalMem = stof(values[1]);
+}
+
+
