@@ -324,17 +324,27 @@ float ProcessParser::getSysRamPercent(){
     return result;
 }
 
+
+
 string ProcessParser::getSysKernelVersion(){
 
     vector<string> values;
-    float result;
-    float totalMem;
-    float freeMem;
-    float buffers;
+    string result;
 
     string Path = Path::basePath()+Path::versionPath();
     values = ProcessParser::searcher(Path, "Linux version ");
-    totalMem = stof(values[1]);
+    result = values[1];
 }
 
+
+
+string ProcessParser::getOSName(){
+
+    vector<string> values;
+    string result;
+
+    string Path = "/etc/os-release";
+    values = ProcessParser::searcher(Path, "PRETTY NAME=");
+    result = values[1];
+}
 
