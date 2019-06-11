@@ -113,3 +113,53 @@ string ProcessParser::getProcUpTime(string pid){
     float result = uptime/freq;
     return to_string(result);
 }
+
+
+
+long int ProcessParser::getSysUpTime(){
+    
+    string line;
+    ifstream stream = Util::getStream((Path::basePath() + Path::upTimePath()));
+    getline(stream, line);
+    istringstream buf(line);
+    istream_iterator<string> beg(buf), end;
+    vector<string> values(beg,end);
+    // number in the extracted string is truncked to int
+    int result = stoi(values[0]);
+
+    return result;
+}
+
+
+
+string ProcessParser::getProcUser(string pid){
+
+    string line;
+    string name = "Uid:";
+    string value;
+    string Uid;
+    string User;
+
+    // Get Uid 
+    ifstream stream = Util::getStream((Path::basePath()+pid+Path::statusPath()));
+    while(getline(stream, line)) {
+        if (line.compare(0,name.size(), name) == 0) {
+            istringstream buf(line);
+            istream_iterator<string> beg(buf), end;
+            vector<string> values(beg,end);
+            Uid = values[1];
+            break;
+        }
+    };
+
+    // Get User
+    stream = Util::getStream("/etc/passwd");
+    while(getline(stream, line)) {
+        if (line.find(":x:" + Uid) != string::npos) {
+            User = line.substr(0,line.find(":x:"+Uid));
+            break;
+        }
+    };
+
+    return User;
+}
