@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 #include <iostream>
 #include <math.h>
@@ -188,7 +190,7 @@ string ProcessParser::getProcUser(string pid){
 
 
 
-vector<string> getPidList(){
+vector<string> ProcessParser::getPidList(){
     // Return a PID list of process running in the machine as a vector
     
     //Directory of the processes
@@ -361,7 +363,7 @@ int ProcessParser::getTotalThreads(){
     string Path;
     int result = 0;
 
-    pidList = getPidList();
+    pidList = ProcessParser::getPidList();
     for (string pid : pidList){
         Path = Path::basePath()+pid+Path::statusPath();
         values = ProcessParser::searcher(Path, "Threads:");
@@ -398,3 +400,14 @@ int ProcessParser::getNumberOfRunningProcesses(){
 
     return result;
 }
+
+ bool ProcessParser::isPidExisting(string pid){
+
+    bool result;
+     vector<string> pid_List = ProcessParser::getPidList();
+     for (string pidE : pid_List){
+         if (pid == pidE)
+         result = true;
+     }
+    return result;
+ }
