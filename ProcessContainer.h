@@ -29,7 +29,7 @@ std::string ProcessContainer::printList(){
     return result;
 }
 std::vector<std::vector<std::string> > ProcessContainer::getList(){
-    std::vector<std::vector<std::string>> values;
+    std::vector<std::vector<std::string> > values;
     std::vector<std::string> stringifiedList;
     for(int i=0; i<ProcessContainer::_list.size(); i++){
         stringifiedList.push_back(ProcessContainer::_list[i].getProcess());

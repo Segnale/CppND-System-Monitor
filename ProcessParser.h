@@ -18,8 +18,6 @@
 #include <unistd.h>
 #include "constants.h"
 
-#include "util.h"
-
 
 using namespace std;
 
