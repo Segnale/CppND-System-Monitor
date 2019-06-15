@@ -10,7 +10,7 @@ public:
     }
     void refreshList();
     std::string printList();
-    std::vector<std::vector<std::string>> getList();
+    std::vector<std::vector<std::string> > getList();
 };
 
 void ProcessContainer::refreshList(){
