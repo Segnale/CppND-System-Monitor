@@ -403,7 +403,7 @@ int ProcessParser::getNumberOfRunningProcesses(){
 
  bool ProcessParser::isPidExisting(string pid){
 
-    bool result;
+    bool result = false;
      vector<string> pid_List = ProcessParser::getPidList();
      for (string pidE : pid_List){
          if (pid == pidE)
