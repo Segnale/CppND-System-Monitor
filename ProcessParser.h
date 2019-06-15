@@ -74,20 +74,14 @@ vector<string> ProcessParser::searcher(string path, string ref){
 
 
 string ProcessParser::getVmSize(string pid) {
-    string line;
-    string name = "VmData";
-    string value;
-    float result;
-    ifstream stream = Util::getStream((Path::basePath()+pid+Path::statusPath()));
-    while(getline(stream, line)) {
-        if (line.compare(0,name.size(), name) == 0) {
-            istringstream buf(line);
-            istream_iterator<string> beg(buf), end;
-            vector<string> values(beg,end);
-            result = stof(values[1])/float(1024);
-            break;
-        }
-    };
+
+    vector<string> values;
+    int result;
+
+    string Path = Path::basePath()+pid+Path::statusPath();
+    values = ProcessParser::searcher(Path, "VmData");
+    result = stof(values[1])/float(1024);
+    
     return to_string(result);
 }
 
