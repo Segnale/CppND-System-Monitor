@@ -206,7 +206,7 @@ vector<string> getPidList(){
             continue;
         //check if all the char are digist (as per common pid) using lambda function
         if(all_of(dirp->d_name, dirp->d_name + strlen(dirp->d_name),[](char c){return isdigit(c);})){
-            pidContainer(dirp->d_name);
+            pidContainer.push_back(dirp->d_name);
         }
 
         //close the directory and check it closed
@@ -250,7 +250,7 @@ int ProcessParser::getNumberOfCores(){
 
 
 
-vector<string> ProcessParser::getSysCpuPercent(string coreNumber = ""){
+vector<string> ProcessParser::getSysCpuPercent(string coreNumber){
 
     string line;
     string name = "cpu"+coreNumber;
@@ -260,11 +260,11 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber = ""){
         if (line.compare(0,name.size(), name) == 0) {
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
-            vector<string> result(beg+1,end);
+            vector<string> result(beg,end);
+            result.erase(result.begin());
             break;
         }
     };
-
     return result;
 }
 
