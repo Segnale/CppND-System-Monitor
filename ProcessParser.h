@@ -52,7 +52,6 @@ public:
 
 };
 
-// TODO: Define all of the above functions below:
 
 vector<string> ProcessParser::searcher(string path, string ref){
 
@@ -68,7 +67,6 @@ vector<string> ProcessParser::searcher(string path, string ref){
     };
 
     return result;
-
 }
 
 
@@ -83,7 +81,6 @@ string ProcessParser::getVmSize(string pid) {
     
     return to_string(result);
 }
-
 
 
 string ProcessParser::getCpuPercent(string pid) {
@@ -123,12 +120,11 @@ string ProcessParser::getProcUpTime(string pid){
     istringstream buf(line);
     istream_iterator<string> beg(buf), end;
     vector<string> values(beg,end);
-    float uptime = stof(values[13]);
 
+    float uptime = stof(values[13]);
     float freq = sysconf(_SC_CLK_TCK);
 
-    float result = uptime/freq;
-    return to_string(result);
+    return to_string(float(uptime/freq));
 }
 
 
@@ -142,7 +138,7 @@ long int ProcessParser::getSysUpTime(){
     istream_iterator<string> beg(buf), end;
     vector<string> values(beg,end);
     // number in the extracted string is truncked to int
-    int result = stoi(values[0]);
+    long int result = stoi(values[0]);
 
     return result;
 }
@@ -152,22 +148,15 @@ long int ProcessParser::getSysUpTime(){
 string ProcessParser::getProcUser(string pid){
 
     string line;
-    string name = "Uid:";
-    string value;
     string Uid;
     string User;
 
     // Get Uid 
-    ifstream stream = Util::getStream((Path::basePath()+pid+Path::statusPath()));
-    while(getline(stream, line)) {
-        if (line.compare(0,name.size(), name) == 0) {
-            istringstream buf(line);
-            istream_iterator<string> beg(buf), end;
-            vector<string> values(beg,end);
-            Uid = values[1];
-            break;
-        }
-    };
+    vector<string> values;
+    
+    string Path = Path::basePath()+pid+Path::statusPath();
+    values = ProcessParser::searcher(Path, "Uid:");
+    Uid = values[1];
 
     // Get User
     stream = Util::getStream("/etc/passwd");
