@@ -56,6 +56,7 @@ public:
 vector<string> ProcessParser::searcher(string path, string ref){
 
     string line;
+    vector<string> result;
     ifstream stream = Util::getStream(path);
     while(getline(stream, line)) {
         if (line.compare(0,ref.size(), ref) == 0) {
@@ -153,7 +154,7 @@ string ProcessParser::getProcUser(string pid){
 
     // Get Uid 
     vector<string> values;
-    
+
     string Path = Path::basePath()+pid+Path::statusPath();
     values = ProcessParser::searcher(Path, "Uid:");
     Uid = values[1];
@@ -163,11 +164,11 @@ string ProcessParser::getProcUser(string pid){
     while(getline(stream, line)) {
         if (line.find(":x:" + Uid) != string::npos) {
             User = line.substr(0,line.find(":x:"+Uid));
-            break;
+            return User;
         }
     };
 
-    return User;
+    return "";
 }
 
 
@@ -207,7 +208,7 @@ vector<string> ProcessParser::getPidList(){
 string ProcessParser::getCmd(string pid){
 
     string line;
-    ifstream stream = Util::getStream((Path::basePath() + pid +Path::cmdPath()));
+    ifstream stream = Util::getStream((Path::basePath() + pid + Path::cmdPath()));
     getline(stream, line);
 
     return line;
@@ -218,15 +219,15 @@ string ProcessParser::getCmd(string pid){
 int ProcessParser::getNumberOfCores(){
     string line;
     string name = "cpu cores";
-    int result;
+    int result = 0;
     ifstream stream = Util::getStream((Path::basePath()+"cpuinfo"));
     while(getline(stream, line)) {
         if (line.compare(0,name.size(), name) == 0) {
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
             vector<string> values(beg,end);
-            result = stoi(values[3]);
-            break;
+            return stoi(values[3]);
+            //break;
         }
     };
     return result;
@@ -245,7 +246,7 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber){
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
             vector<string> result(beg,end);
-            result.erase(result.begin());
+            //result.erase(result.begin());
             break;
         }
     };
