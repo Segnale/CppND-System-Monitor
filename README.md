@@ -35,4 +35,4 @@ The System Monitor application makes use of the `ncurses` package and run straig
 * memory usage
 * process Up Time
 
-![System_Monitor](assets/Monitor.png =270x)
+![System_Monitor](assets/Monitor,png)
