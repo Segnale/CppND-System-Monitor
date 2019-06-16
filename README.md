@@ -20,10 +20,18 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 g++ -std="c++17" main.cpp -lncurses
 ./a.out
 ```
-5. In case of error that looks like the following: 
-```
-root@77e30fca8a01:/home/workspace/CppND-Object-Oriented# ./a.out
-*** %n in writable segment detected ***
-                                      Aborted (core dumped)
-```
-just keep trying `./a.out` and it should work eventually!
+
+## System Monitor
+The System Monitor application makes use of the `ncurses` package and run straight in the Linux Terminal. It is made of two area, a top window with generic system informations
+* OS info
+* CPU usage
+* Total RAM Usage
+* Number of processes active
+and a bottom window with the list of 10 latest processes actives with a list of their most relevant informations:
+* pid
+* user of the process
+* cpu usage
+* memory usage
+* process Up Time
+
+![System_Monitor](assets/Monitor.png)
