@@ -396,7 +396,7 @@ int ProcessParser::getNumberOfRunningProcesses(){
      vector<string> pid_List = ProcessParser::getPidList();
      for (string pidE : pid_List){
          if (pid == pidE)
-         result = true;
+            result = true;
      }
     return result;
  }
