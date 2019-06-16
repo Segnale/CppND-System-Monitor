@@ -173,7 +173,29 @@ string ProcessParser::getProcUser(string pid){
 }
 
 
+vector<string> ProcessParser::getPidList(){
+    DIR* dir;
+    // Basically, we are scanning /proc dir for all directories with numbers as their names
+    // If we get valid check we store dir names in vector as list of machine pids
+    vector<string> container;
+    if(!(dir = opendir("/proc")))
+        throw runtime_error(strerror(errno));
 
+    while (dirent* dirp = readdir(dir)) {
+        // is this a directory?
+        if(dirp->d_type != DT_DIR)
+            continue;
+        // Is every character of the name a digit?
+        if (all_of(dirp->d_name, dirp->d_name + strlen(dirp->d_name), [](char c){ return isdigit(c); })) {
+            container.push_back(dirp->d_name);
+        }
+    }
+    //Validating process of directory closing
+    if(closedir(dir))
+        throw runtime_error(strerror(errno));
+
+    return container;
+}
 
 
 string ProcessParser::getCmd(string pid){
