@@ -274,7 +274,7 @@ float ProcessParser::getSysIdleCpuTime(vector<string> values){
 
 
 
-string ProcessParser::PrintCpuStats(vector<string> values1, vector<string>values2){
+string ProcessParser::PrintCpuStats(vector<string> values1, vector<string> values2) {
 
     float activeTime = ProcessParser::getSysActiveCpuTime(values2)-ProcessParser::getSysActiveCpuTime(values1);
     float idleTime = ProcessParser::getSysIdleCpuTime(values2)-ProcessParser::getSysIdleCpuTime(values1);
@@ -303,7 +303,7 @@ float ProcessParser::getSysRamPercent(){
     values = ProcessParser::searcher(Path, "Buffers:");
     buffers = stof(values[1]);
 
-    result = 100.0*(1-(freeMem/(totalMem-buffers)));
+    result = float(100.0*(1-(freeMem/(totalMem-buffers))));
 
     return result;
 }
@@ -317,7 +317,7 @@ string ProcessParser::getSysKernelVersion(){
 
     string Path = Path::basePath()+Path::versionPath();
     values = ProcessParser::searcher(Path, "Linux version ");
-    result = values[1];
+    result = values[2];
 
     return result;
 }
@@ -326,14 +326,21 @@ string ProcessParser::getSysKernelVersion(){
 
 string ProcessParser::getOSName(){
 
-    vector<string> values;
-    string result;
+    string line;
+    string name = "PRETTY_NAME=";
 
-    string Path = "/etc/os-release";
-    values = ProcessParser::searcher(Path, "PRETTY NAME=");
-    result = values[1];
+    ifstream stream = Util::getStream(("/etc/os-release"));
 
-    return result;
+    while (std::getline(stream, line)) {
+        if (line.compare(0, name.size(), name) == 0) {
+              std::size_t found = line.find("=");
+              found++;
+              string result = line.substr(found);
+              result.erase(std::remove(result.begin(), result.end(), '"'), result.end());
+              return result;
+        }
+    }
+    return "";
 }
 
 
