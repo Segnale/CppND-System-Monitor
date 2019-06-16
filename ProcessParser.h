@@ -80,7 +80,6 @@ string ProcessParser::getVmSize(string pid) {
     values = ProcessParser::searcher(Path, "VmData");
     result = stof(values[1])/float(1024^2);
     
-    cout<< "getVmSize OK"<<endl;
     return to_string(result);
 }
 
@@ -106,8 +105,8 @@ string ProcessParser::getCpuPercent(string pid) {
     float freq = sysconf(_SC_CLK_TCK);
 
     float total_time = utime + stime + cutime + cstime;
-    float seconds = utime -(starttime/freq);
-    result = 100*((total_time/freq)/seconds);
+    float seconds = uptime -(starttime/freq);
+    result = float(100*((total_time/freq)/seconds));
 
     return to_string(result);
 }
@@ -244,6 +243,7 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber){
             break;
         }
     };
+    
     return result;
 }
 

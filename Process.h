@@ -31,7 +31,7 @@ public:
     string getPid()const;
     string getUser()const;
     string getCmd()const;
-    int getCpu()const;
+    float getCpu()const;
     int getMem()const;
     string getUpTime()const;
     string getProcess();
@@ -53,8 +53,8 @@ string Process::getCmd()const {
     return this->cmd;
 }
 
-int Process::getCpu()const {
-    return stoi(this->cpu);
+float Process::getCpu()const {
+    return stof(this->cpu);
 }
 
 int Process::getMem()const {
@@ -72,11 +72,16 @@ string Process::getProcess(){
     this->mem = ProcessParser::getVmSize(this->pid);
     this->upTime = ProcessParser::getProcUpTime(this->pid);
     this->cpu = ProcessParser::getCpuPercent(this->pid);
+    string for_empties = this->pid;
+    string pid_empties(7-for_empties.size(),' ');
+    for_empties = this->user;
+    string user_empties(7-for_empties.size(),' ');
 
-    return (this->pid + "   " 
-            + this->user.substr(0,5) + "   " 
-            + this->mem.substr(0,5) + "   " 
-            + this->cpu.substr(0,5) + "   " 
-            + this->upTime.substr(0,5) + "   "
+
+    return (this->pid + pid_empties  
+            + this->user.substr(0,5) + user_empties 
+            + this->cpu.substr(0,5) + "     " 
+            + this->mem.substr(0,5) + "     " 
+            + this->upTime.substr(0,5) + "    "
             + this->cmd.substr(0,30) + "...");
 }

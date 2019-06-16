@@ -32,7 +32,7 @@ void writeSysInfoToConsole(SysInfo sys, WINDOW* sys_win){
     wattron(sys_win,COLOR_PAIR(1));
     std::vector<std::string> val = sys.getCoresStats();
     for(int i=0;i<val.size();i++){
-     mvwprintw(sys_win,(6+i),2,getCString(val[i]));
+        mvwprintw(sys_win,(6+i),2,getCString(val[i]));
     }
     wattroff(sys_win,COLOR_PAIR(1));
     mvwprintw(sys_win,10,2,getCString(( "Memory: ")));
@@ -100,6 +100,6 @@ int main( int   argc, char *argv[] )
 // Object which containts relevant methods and attributes regarding system details
     SysInfo sys;
     //std::string s = writeToConsole(sys);
-    //printMain(sys,procs);
+    printMain(sys,procs);
     return 0;
 }
