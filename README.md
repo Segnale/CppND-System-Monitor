@@ -27,7 +27,8 @@ The System Monitor application makes use of the `ncurses` package and run straig
 * CPU usage
 * Total RAM Usage
 * Number of processes active
-and a bottom window with the list of 10 latest processes actives with a list of their most relevant informations:
+
+...and a bottom window with the list of the 10 latest processes actives with a list of their most relevant informations:
 * pid
 * user of the process
 * cpu usage
