@@ -57,7 +57,6 @@ public:
 vector<string> ProcessParser::searcher(string path, string ref){
 
     string line;
-    vector<string> result;
     ifstream stream = Util::getStream(path);
     while(getline(stream, line)) {
         if (line.compare(0,ref.size(), ref) == 0) {
@@ -76,18 +75,18 @@ vector<string> ProcessParser::searcher(string path, string ref){
 string ProcessParser::getVmSize(string pid) {
 
     vector<string> values;
-    int result;
+    float result;
 
     string Path = Path::basePath()+pid+Path::statusPath();
     values = ProcessParser::searcher(Path, "VmData");
-    result = stof(values[1])/float(1024);
+    result = stof(values[1])/float(1024^2);
     
     return to_string(result);
 }
 
 
 
-string ProcessParser::getCpuPercent(string pid){
+string ProcessParser::getCpuPercent(string pid) {
 
     string line;
     string value;
