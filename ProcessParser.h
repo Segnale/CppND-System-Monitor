@@ -160,7 +160,7 @@ string ProcessParser::getProcUser(string pid){
     Uid = values[1];
 
     // Get User
-    stream = Util::getStream("/etc/passwd");
+    ifstream stream = Util::getStream("/etc/passwd");
     while(getline(stream, line)) {
         if (line.find(":x:" + Uid) != string::npos) {
             User = line.substr(0,line.find(":x:"+Uid));
@@ -202,7 +202,6 @@ vector<string> ProcessParser::getPidList(){
     };
 
 }
-
 
 
 string ProcessParser::getCmd(string pid){
