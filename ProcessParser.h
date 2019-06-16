@@ -62,11 +62,11 @@ vector<string> ProcessParser::searcher(string path, string ref){
         if (line.compare(0,ref.size(), ref) == 0) {
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
-            vector<string> result(beg,end);
+            vector<string> values(beg,end);
+            result = values;
             break;
         }
     };
-
     return result;
 }
 
@@ -80,6 +80,7 @@ string ProcessParser::getVmSize(string pid) {
     values = ProcessParser::searcher(Path, "VmData");
     result = stof(values[1])/float(1024^2);
     
+    cout<< "getVmSize OK"<<endl;
     return to_string(result);
 }
 
@@ -244,7 +245,8 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber){
         if (line.compare(0,name.size(), name) == 0) {
             istringstream buf(line);
             istream_iterator<string> beg(buf), end;
-            vector<string> result(beg,end);
+            vector<string> values(beg,end);
+            result = values;
             //result.erase(result.begin());
             break;
         }
