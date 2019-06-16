@@ -174,35 +174,6 @@ string ProcessParser::getProcUser(string pid){
 
 
 
-vector<string> ProcessParser::getPidList(){
-    // Return a PID list of process running in the machine as a vector
-    
-    //Directory of the processes
-    DIR* dir;
-    //vector process id container declaration
-    vector<string> pidContainer;
-
-    //ensure the process directory can be opened
-    if(!(dir = opendir("/proc")))
-        throw runtime_error(strerror(errno));
-
-    while (dirent* dirp = readdir(dir)){
-        //check if it is a directory
-        if(dirp->d_type != DT_DIR)
-            continue;
-        //check if all the char are digist (as per common pid) using lambda function
-        if(all_of(dirp->d_name, dirp->d_name + strlen(dirp->d_name),[](char c){return isdigit(c);})){
-            pidContainer.push_back(dirp->d_name);
-        }
-
-        //close the directory and check it closed
-        if(closedir(dir))
-            throw runtime_error(strerror(errno));
-
-        return pidContainer;
-    };
-
-}
 
 
 string ProcessParser::getCmd(string pid){

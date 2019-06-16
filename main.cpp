@@ -57,13 +57,13 @@ void getProcessListToConsole(std::vector<string> processes,WINDOW* win){
     wattroff(win, COLOR_PAIR(2));
     for(int i=0; i< processes.size();i++){
         mvwprintw(win,2+i,2,getCString(processes[i]));
-   }
+    }
 }
 void printMain(SysInfo sys,ProcessContainer procs){
-	initscr();			/* Start curses mode 		  */
-    noecho(); // not printing input values
-    cbreak(); // Terminating on classic ctrl + c
-    start_color(); // Enabling color change of text
+	initscr();			        /* Start curses mode 		  */
+    noecho();                   // not printing input values
+    cbreak();                   // Terminating on classic ctrl + c
+    start_color();              // Enabling color change of text
     int yMax,xMax;
     getmaxyx(stdscr,yMax,xMax); // getting size of window measured in lines and columns(column one char length)
 	WINDOW *sys_win = newwin(17,xMax-1,0,0);
@@ -79,7 +79,7 @@ void printMain(SysInfo sys,ProcessContainer procs){
     procs.refreshList();
     std::vector<std::vector<std::string> > processes = procs.getList();
     writeSysInfoToConsole(sys,sys_win);
-    getProcessListToConsole(processes[counter],proc_win);
+    getProcessListToConsole(processes[counter], proc_win);
     wrefresh(sys_win);
     wrefresh(proc_win);
     refresh();
@@ -100,6 +100,6 @@ int main( int   argc, char *argv[] )
 // Object which containts relevant methods and attributes regarding system details
     SysInfo sys;
     //std::string s = writeToConsole(sys);
-    printMain(sys,procs);
+    //printMain(sys,procs);
     return 0;
 }
